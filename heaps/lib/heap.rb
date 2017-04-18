@@ -1,7 +1,8 @@
-
+require 'byebug'
 class BinaryMinHeap
   def initialize(&prc)
     @store = []
+    
   end
 
   def count
@@ -43,11 +44,14 @@ class BinaryMinHeap
     i = 0
 
     while i <= BinaryMinHeap.parent_index(len-1)
-      small_child_idx =
-        BinaryMinHeap.child_indices(len, i).min_by {
-          |i| array[i]
-        }
-
+      small_child_idxs = BinaryMinHeap.child_indices(len, i)
+      if small_child_idxs.length == 1
+        small_child_idx = small_child_idxs[0]
+      elsif (prc.call(array[small_child_idxs[0]], array[small_child_idxs[1]]) < 0)
+        small_child_idx = small_child_idxs[0]
+      else
+        small_child_idx = small_child_idxs[1]
+      end
       if prc.call(array[small_child_idx], array[i]) < 0
         array[i], array[small_child_idx] =
         array[small_child_idx], array[i]
