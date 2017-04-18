@@ -20,10 +20,10 @@ class QuickSort
     barrier = QuickSort.partition(array, start, length, &prc)
     # debugger
 
-    QuickSort.sort2!(array, start,barrier - start, &prc )
-    QuickSort.sort2!(array, barrier + 1, length - barrier - 1, &prc )
-    # QuickSort.sort2!(array[start...barrier], start, &prc )
-    # QuickSort.sort2!(array[barrier + 1..length], barrier, &prc )
+    # QuickSort.sort2!(array, start, array[start...barrier].length, &prc ) unless barrier == 0
+    # QuickSort.sort2!(array, barrier + 1, array[barrier + 1..length].length, &prc )
+    QuickSort.sort2!(array[start...barrier], start, &prc )
+    QuickSort.sort2!(array[barrier + 1..length], barrier, &prc )
   end
 
   def self.partition(array, start, length, &prc)
