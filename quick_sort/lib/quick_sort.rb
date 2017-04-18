@@ -15,15 +15,19 @@ class QuickSort
 
   # In-place.
   def self.sort2!(array, start = 0, length = array.length, &prc)
-    return array if array.length < 1
+    return array if length < 2
     prc ||= Proc.new { |x, y| x <=> y }
     barrier = QuickSort.partition(array, start, length, &prc)
     # debugger
 
-    # QuickSort.sort2!(array, start, array[start...barrier].length, &prc ) unless barrier == 0
-    # QuickSort.sort2!(array, barrier + 1, array[barrier + 1..length].length, &prc )
-    QuickSort.sort2!(array[start...barrier], start, &prc )
-    QuickSort.sort2!(array[barrier + 1..length], barrier, &prc )
+    left_length = barrier - start
+    right_length = length - (left_length + 1)
+
+    QuickSort.sort2!(array, start, left_length, &prc )
+    QuickSort.sort2!(array, barrier + 1, right_length, &prc )
+    # QuickSort.sort2!(array[start...barrier], start, &prc )
+    # QuickSort.sort2!(array[barrier + 1..length], barrier, &prc )
+    array
   end
 
   def self.partition(array, start, length, &prc)

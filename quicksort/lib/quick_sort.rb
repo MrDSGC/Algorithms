@@ -15,37 +15,27 @@ class QuickSort
 
   # In-place.
   def self.sort2!(array, start = 0, length = array.length, &prc)
-    return array if array.length < 1
     prc ||= Proc.new { |x, y| x <=> y }
-    barrier = QuickSort.partition(array, start, length, &prc)
-    # debugger
 
-    QuickSort.sort2!(array, start,barrier - start, &prc )
-    QuickSort.sort2!(array, barrier + 1, length - barrier - 1, &prc )
-    # QuickSort.sort2!(array[start...barrier], start, &prc )
-    # QuickSort.sort2!(array[barrier + 1..length], barrier, &prc )
+    return array if array.length <= 1
+    barrier = partition(array, start, length, &prc)
+    # debugger
+    sort2!(array, start,barrier - start, &prc )
+    sort2!(array, barrier + 1, length - barrier - 1, &prc )
   end
 
   def self.partition(array, start, length, &prc)
     prc ||= Proc.new { |x, y| x <=> y }
-
     pivot = array[start]
-    i = 1
-    barrier_idx = start
+    part = start
 
-    while i < length
-      if prc.call(array[i+ start], pivot) < 0
-        if start + i > barrier_idx
-          array[start + i], array[barrier_idx + 1] = array[barrier_idx + 1], array[start + i]
-          barrier_idx += 1
-        else
-          barrier_idx += 1
-        end
+    (start + 1).upto(start + length - 1) do |tracked|
+      if prc.call(array[tracked], pivot) == -1
+        array[tracked], array[part + 1] =  array[part + 1], array[tracked]
+        part += 1
       end
-      i += 1
     end
-
-    array[start], array[barrier_idx] = array[barrier_idx], array[start]
-    barrier_idx
+    array[start], array[part] = array[part], array[start]
+    part
   end
 end
