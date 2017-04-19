@@ -7,7 +7,9 @@ def kth_largest(bst, k)
 end
 
 def lowest_common_ancestor(node1, node2)
+return node1.parent if node1.parent == node2.parent
 
+lowest_common_ancestor(node1.parent, node2.parent)
 end
 
 def post_order_traversal(bst)
